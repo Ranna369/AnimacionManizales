@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>El Sol y los petroglifos de Támesis</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f6f1e8;--fg:#2a2118;--mut:#6b5d4d;--card:#ebe3d4;--acc:#b5532a;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14101c;--fg:#f1e9dc;--mut:#a99d8d;--card:#201a2c;--acc:#f0a35e;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14101c;--fg:#f1e9dc;--mut:#a99d8d;--card:#201a2c;--acc:#f0a35e;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 Georgia,'Times New Roman',serif}
+main{max-width:980px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:clamp(1.5rem,4vw,2.3rem);margin:.2em 0 .1em;line-height:1.15}
+.sub{color:var(--mut);margin:0 0 14px}
+svg{width:100%;height:auto;display:block;border-radius:12px}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+button{font:inherit;font-size:.9rem;padding:8px 14px;border-radius:999px;border:1.5px solid var(--acc);background:transparent;color:var(--fg);cursor:pointer}
+button.on{background:var(--acc);color:#1a120a}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:8px}
+.c{background:var(--card);border-radius:10px;padding:8px 12px}
+.c small{display:block;color:var(--mut);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
+.c b{font:600 1.15rem ui-monospace,Menlo,monospace}
+.note{background:var(--card);border-radius:10px;padding:12px 16px;margin-top:14px;font-size:.88rem;color:var(--mut)}
+.note b{color:var(--fg)}
+</style>
+</head>
+<body>
+<main>
+<h1>El Sol y las rocas de Támesis</h1>
+<p class="sub">Amanecer visto desde la roca La Palestina 1 hacia los Farallones de La Pintada · latitud 5°41′ N</p>
+
+<svg id="sv" viewBox="0 0 900 420" role="img" aria-label="Salida del Sol sobre el horizonte oriental">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop id="s0" offset="0" stop-color="#0b1033"/><stop id="s1" offset="1" stop-color="#2b2a5c"/></linearGradient>
+<radialGradient id="glow"><stop offset="0" stop-color="#fff6c8" stop-opacity=".95"/><stop offset=".25" stop-color="#ffd37a" stop-opacity=".55"/><stop offset="1" stop-color="#ff9a4d" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="900" height="300" fill="url(#sky)"/>
+<g id="stars"></g>
+<g id="sunG"><circle id="halo" r="120" fill="url(#glow)"/><circle id="sun" r="14" fill="#fff3b8"/></g>
+<g id="ridges"></g>
+<g id="lines"></g>
+<g id="rock"></g>
+<g id="ruler"></g>
+</svg>
+
+<div class="ctl" id="ctl">
+<button data-m="eq" class="on">Equinoccio</button>
+<button data-m="jun">Solsticio de junio</button>
+<button data-m="dic">Solsticio de diciembre</button>
+<button data-m="year">Todo el año</button>
+<button id="pp">⏸ Pausa</button>
+</div>
+
+<div class="grid">
+<div class="c"><small>Fecha</small><b id="rF">—</b></div>
+<div class="c"><small>Declinación δ</small><b id="rD">—</b></div>
+<div class="c"><small>Hora solar</small><b id="rT">—</b></div>
+<div class="c"><small>Altura h</small><b id="rH">—</b></div>
+<div class="c"><small>Azimut A</small><b id="rA">—</b></div>
+<div class="c"><small>Azimut de salida A₀</small><b id="rS">—</b></div>
+<div class="c"><small>A₀ − Farallón más cercano</small><b id="rR">—</b></div>
+</div>
+
+<div class="note">
+<b>Cómo se calcula.</b> Con φ = 5°41′31″ N, el Sol sale (h = 0°) en el azimut A₀ = arccos(sen δ / cos φ), medido desde el norte hacia el este. Con δ = 0° (equinoccio) da 90°; con δ = ±23,44° (solsticios) da 66,4° y 113,6°. Altura y azimut en cada instante salen de sen h = sen φ sen δ + cos φ cos δ cos H.<br><br>
+<b>Datos de campo.</b> Desde La Palestina 1, Cuartas-Restrepo et al. (2021) midieron el Farallón Montenegro a 59°56′ y La Pintada a 80°38′; el Sol de junio a 66°26′ y el equinoccial a 90°.<br><br>
+<b>Qué es esquemático.</b> La silueta de los farallones es ilustrativa: solo los azimuts de las cumbres son datos medidos, no sus alturas. El disco solar está agrandado y no se incluye refracción atmosférica. Los autores no registraron la orientación de cada grabado, así que esto muestra la relación roca-horizonte, no luz sobre un panel concreto. Los grabados del primer plano (espiral y diábolo) son motivos típicos del complejo, no un petroglifo en particular.<br><br>
+Fuente: Cuartas Restrepo, Arango Arias e Izquierdo Peña (2021), <i>Cosmovisiones/Cosmovisões</i> 3(1): 283–314.
+</div>
+</main>
+
+<script>
+const R=Math.PI/180,PHI=5.692*R,EPS=23.44,AZ0=50,K=12,HY=300;
+const X=a=>(a-AZ0)*K,Y=h=>HY-h*K;
+const MB=59.933,LP=80.633;
+const COL={jun:'#ffb347',eq:'#ffe27a',dic:'#ff7a6b'};
+const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
+function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||$('sv')).appendChild(e);return e}
+const rise=d=>Math.acos(Math.sin(d*R)/Math.cos(PHI))/R;
+const H0=d=>Math.acos(-Math.tan(PHI)*Math.tan(d*R))/R;
+const Hend=(d,alt)=>Math.acos((Math.sin(alt*R)-Math.sin(PHI)*Math.sin(d*R))/(Math.cos(PHI)*Math.cos(d*R)))/R;
+function sunAt(d,Hd){const dd=d*R,H=Hd*R,sh=Math.sin(PHI)*Math.sin(dd)+Math.cos(PHI)*Math.cos(dd)*Math.cos(H),h=Math.asin(sh);
+let ca=(Math.sin(dd)-sh*Math.sin(PHI))/(Math.cos(h)*Math.cos(PHI));ca=Math.max(-1,Math.min(1,ca));let A=Math.acos(ca)/R;if(H>0)A=360-A;return{h:h/R,A}}
+const f1=(x)=>x.toFixed(1).replace('.',','),f2=x=>x.toFixed(2).replace('.',',');
+
+// estrellas
+(function(){const g=$('stars');let s=7;const r=()=>(s=(s*9301+49297)%233280)/233280;for(let i=0;i<45;i++)el('circle',{cx:r()*900,cy:r()*230,r:r()*1.3+.4,fill:'#fff'},g)})();
+
+// siluetas (az, altura en grados) esquemáticas
+const far=[[50,1.6],[54,2.4],[57,3.6],[MB,4.6],[62,3.2],[66,2.1],[70,1.7],[74,2.8],[78,3.9],[LP,4.8],[83,3.3],[87,2.0],[95,1.4],[105,1.5],[115,1.1],[125,1.8]];
+const near=[[50,.5],[60,1.0],[70,.4],[80,.9],[92,.3],[102,.8],[112,.4],[125,.9]];
+const poly=(pts,fill,g)=>el('path',{d:'M'+pts.map(p=>X(p[0])+','+Y(p[1])).join('L')+'L900,420L0,420Z',fill},g);
+poly(far,'#2a2a4a',$('ridges'));poly(near,'#17142a',$('ridges'));
+
+// líneas de azimut
+const gl=$('lines');
+[[MB,'Montenegro 59,9°','#cfd3ff','end'],[LP,'La Pintada 80,6°','#cfd3ff','start']].forEach(([a,t,c,an])=>{
+ el('line',{x1:X(a),x2:X(a),y1:24,y2:HY,stroke:c,'stroke-dasharray':'3 5','stroke-opacity':.55},gl);
+ el('text',{x:X(a)+(an=='end'?-5:5),y:16,fill:c,'font-size':12,'text-anchor':an,'font-family':'ui-monospace,monospace'},gl).textContent=t});
+const sr={jun:rise(EPS),eq:rise(0),dic:rise(-EPS)};
+[['jun','Sol jun '],['eq','Sol equin. '],['dic','Sol dic ']].forEach(([k,t])=>{
+ const a=sr[k];el('line',{x1:X(a),x2:X(a),y1:24,y2:HY,stroke:COL[k],'stroke-width':1.4,'stroke-opacity':.8},gl);
+ el('text',{x:X(a)+5,y:16,fill:COL[k],'font-size':12,'font-family':'ui-monospace,monospace'},gl).textContent=t+f1(a)+'°'});
+
+// roca con grabados
+const rk=$('rock');
+el('path',{d:'M330,372 C326,350 340,330 372,326 C410,318 470,318 508,328 C545,334 566,352 562,372Z',fill:'#0d0b17'},rk);
+const eng={fill:'none',stroke:'#c9b79a','stroke-width':2,'stroke-linecap':'round'};
+let sp='M392,350';for(let i=1;i<=60;i++){const t=i/60*3.6*Math.PI,r=1.5+i*.17;sp+='L'+(392+r*Math.cos(t)).toFixed(1)+','+(350+r*Math.sin(t)).toFixed(1)}
+el('path',Object.assign({d:sp},eng),rk);
+el('path',Object.assign({d:'M452,336 L478,336 L465,350 L478,364 L452,364 L465,350Z'},eng),rk);
+for(let i=0;i<4;i++)el('line',Object.assign({x1:455+i*6,x2:455+i*6,y1:330,y2:335},eng),rk);
+
+// regla de azimut
+const rl=$('ruler');el('rect',{x:0,y:382,width:900,height:38,fill:'#0a0814'},rl);
+for(let a=50;a<=125;a+=5){const x=X(a),big=a%10==0;el('line',{x1:x,x2:x,y1:382,y2:big?394:389,stroke:'#8d86a8'},rl);
+ if(big)el('text',{x,y:410,fill:'#a9a3c4','font-size':11,'text-anchor':'middle','font-family':'ui-monospace,monospace'},rl).textContent=a+'°'}
+el('text',{x:896,y:396,fill:'#a9a3c4','font-size':10,'text-anchor':'end','font-family':'ui-monospace,monospace'},rl).textContent='azimut (N→E)';
+const mk={};['jun','eq','dic'].forEach(k=>{mk[k]=el('path',{d:'M-5,382 L5,382 L0,392Z',fill:COL[k],transform:'translate('+X(sr[k])+',0)'},rl)});
+const cur=el('path',{d:'M-6,382 L6,382 L0,394Z',fill:'#fff'},rl);
+
+// color del cielo según altura del Sol
+const mix=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[v==undefined?0:i]-v)*t));
+const C={n0:[11,16,51],n1:[43,42,92],d0:[44,60,120],d1:[236,120,80],y0:[58,130,200],y1:[170,210,240]};
+function skyAt(h){const t=Math.max(0,Math.min(1,(h+5)/5)),u=Math.max(0,Math.min(1,h/18));
+ const a=mix(C.n0,C.d0,t),b=mix(C.n1,C.d1,t);const a2=mix(a,C.y0,u),b2=mix(b,C.y1,u);
+ $('s0').setAttribute('stop-color','rgb('+a2+')');$('s1').setAttribute('stop-color','rgb('+b2+')');
+ $('stars').setAttribute('opacity',Math.max(0,Math.min(1,(-h+1)/5)).toFixed(2))}
+
+// estado
+let mode='eq',t=0,play=true,last=performance.now();
+const DUR={day:9000,year:14000},DEC={eq:0,jun:EPS,dic:-EPS},NAME={eq:'21 mar / 22 sep',jun:'21 jun',dic:'21 dic'};
+function frame(now){
+ const dt=now-last;last=now;
+ if(play){t+=dt/(mode=='year'?DUR.year:DUR.day);if(t>1.12)t=0}
+ const tt=Math.min(t,1);let d,h,A,Tm,date,a0;
+ if(mode=='year'){const day=tt*365;d=EPS*Math.sin(2*Math.PI*(day-80)/365.25);a0=rise(d);h=0;A=a0;Tm='06:00';
+  date=new Date(2026,0,1+Math.floor(day)).toLocaleDateString('es-CO',{day:'numeric',month:'short'})}
+ else{d=DEC[mode];a0=rise(d);const Hs=-H0(d)-4,He=-Hend(d,24),Hd=Hs+(He-Hs)*tt;const s=sunAt(d,Hd);h=s.h;A=s.A;
+  const hr=12+Hd/15,hh=Math.floor(hr),mm=Math.floor((hr-hh)*60);Tm=String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0');date=NAME[mode]}
+ const cx=X(A),cy=Y(h);
+ $('sun').setAttribute('cx',cx);$('sun').setAttribute('cy',cy);$('halo').setAttribute('cx',cx);$('halo').setAttribute('cy',cy);
+ $('halo').setAttribute('r',90+Math.max(0,60-h*4));
+ cur.setAttribute('transform','translate('+X(a0)+',0)');
+ skyAt(h);
+ const nf=Math.abs(a0-MB)<Math.abs(a0-LP)?['Montenegro',MB]:['La Pintada',LP],df=a0-nf[1];
+ $('rF').textContent=date;$('rD').textContent=(d>=0?'+':'−')+f2(Math.abs(d))+'°';$('rT').textContent=Tm;
+ $('rH').textContent=f1(h)+'°';$('rA').textContent=f1(A)+'°';$('rS').textContent=f1(a0)+'°';
+ $('rR').textContent=(df>=0?'+':'−')+f1(Math.abs(df))+'° '+nf[0];
+ requestAnimationFrame(frame)}
+document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{mode=b.dataset.m;t=0;document.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('on',x===b))});
+$('pp').onclick=()=>{play=!play;$('pp').textContent=play?'⏸ Pausa':'▶ Reproducir'};
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
