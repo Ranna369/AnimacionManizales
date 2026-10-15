@@ -18,6 +18,9 @@ svg{width:100%;height:auto;display:block;border-radius:12px}
 .ctl{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 button{font:inherit;font-size:.9rem;padding:8px 14px;border-radius:999px;border:1.5px solid var(--acc);background:transparent;color:var(--fg);cursor:pointer}
 button.on{background:var(--acc);color:#1a120a}
+.sp{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--mut)}
+.sp input{accent-color:var(--acc);width:130px}
+.sp b{font:600 .9rem ui-monospace,Menlo,monospace;color:var(--fg);min-width:3.2em}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:8px}
 .c{background:var(--card);border-radius:10px;padding:8px 12px}
 .c small{display:block;color:var(--mut);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
@@ -51,6 +54,7 @@ button.on{background:var(--acc);color:#1a120a}
 <button data-m="dic">Solsticio de diciembre</button>
 <button data-m="year">Todo el año</button>
 <button id="pp">⏸ Pausa</button>
+<label class="sp">Velocidad <input id="spd" type="range" min="0.1" max="3" step="0.05" value="1" aria-label="Velocidad de la animación"><b id="spv">1×</b></label>
 </div>
 
 <div class="grid">
@@ -130,11 +134,11 @@ function skyAt(h){const t=Math.max(0,Math.min(1,(h+5)/5)),u=Math.max(0,Math.min(
  $('stars').setAttribute('opacity',Math.max(0,Math.min(1,(-h+1)/5)).toFixed(2))}
 
 // estado
-let mode='eq',t=0,play=true,last=performance.now();
+let mode='eq',t=0,play=true,spd=1,last=performance.now();
 const DUR={day:9000,year:14000},DEC={eq:0,jun:EPS,dic:-EPS},NAME={eq:'21 mar / 22 sep',jun:'21 jun',dic:'21 dic'};
 function frame(now){
  const dt=now-last;last=now;
- if(play){t+=dt/(mode=='year'?DUR.year:DUR.day);if(t>1.12)t=0}
+ if(play){t+=spd*dt/(mode=='year'?DUR.year:DUR.day);if(t>1.12)t=0}
  const tt=Math.min(t,1);let d,h,A,Tm,date,a0;
  if(mode=='year'){const day=tt*365;d=EPS*Math.sin(2*Math.PI*(day-80)/365.25);a0=rise(d);h=0;A=a0;Tm='06:00';
   date=new Date(2026,0,1+Math.floor(day)).toLocaleDateString('es-CO',{day:'numeric',month:'short'})}
@@ -152,6 +156,7 @@ function frame(now){
  requestAnimationFrame(frame)}
 document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{mode=b.dataset.m;t=0;document.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('on',x===b))});
 $('pp').onclick=()=>{play=!play;$('pp').textContent=play?'⏸ Pausa':'▶ Reproducir'};
+$('spd').oninput=e=>{spd=+e.target.value;$('spv').textContent=spd.toFixed(2).replace(/0$/,'').replace(/\.$/,'').replace('.',',')+'×'};
 requestAnimationFrame(frame);
 </script>
 </body>
